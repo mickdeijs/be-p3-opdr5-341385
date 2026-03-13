@@ -40,8 +40,11 @@ Route::put('/leveranciers/{id}', [LeverancierController::class, 'update'])->name
 Route::get('/allergenen', [AllergeenController::class, 'index'])->name('allergeen.index');
 Route::get('/allergenen/product/{id}/leverancier', [AllergeenController::class, 'leverancierInfo'])->name('allergeen.leverancier');
 
-
-
+// Allergenen beheer
+Route::get('/allergenen/{id}/edit', [AllergeenController::class, 'edit'])->name('allergeen.edit');
+Route::put('/allergenen/{id}', [AllergeenController::class, 'update'])->name('allergeen.update');
+Route::delete('/allergenen/{id}', [AllergeenController::class, 'destroy'])->name('allergeen.destroy');
+Route::get('/allergenen/beheer', [AllergeenController::class, 'beheer'])->name('allergeen.beheer');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');

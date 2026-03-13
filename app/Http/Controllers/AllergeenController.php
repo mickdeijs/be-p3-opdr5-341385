@@ -89,4 +89,63 @@ class AllergeenController extends Controller
                 ->with('error', 'Er is een fout opgetreden: ' . $e->getMessage());
         }
     }
+
+    /**
+     * Show the form for editing the specified allergen.
+     */
+    public function edit($id)
+    {
+        $allergeen = $this->allergeenModel->find($id);
+        if (!$allergeen) {
+            return redirect()->route('allergeen.index')->with('error', 'Allergeen niet gevonden.');
+        }
+        return view('allergeen.edit', [
+            'title' => 'Bewerk Allergeen',
+            'allergeen' => $allergeen
+        ]);
+    }
+
+    /**
+     * Update the specified allergen in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'Naam' => 'required|string|max:50',
+            'Omschrijving' => 'nullable|string|max:255',
+        ]);
+        $allergeen = $this->allergeenModel->find($id);
+        if (!$allergeen) {
+            return redirect()->route('allergeen.index')->with('error', 'Allergeen niet gevonden.');
+        }
+        $allergeen->Naam = $request->input('Naam');
+        $allergeen->Omschrijving = $request->input('Omschrijving');
+        $allergeen->save();
+        return redirect()->route('allergeen.index')->with('success', 'Allergeen succesvol bijgewerkt.');
+    }
+
+    /**
+     * Remove the specified allergen from storage.
+     */
+    public function destroy($id)
+    {
+        $allergeen = $this->allergeenModel->find($id);
+        if ($allergeen) {
+            $allergeen->delete();
+            return redirect()->route('allergeen.index')->with('success', 'Allergeen succesvol verwijderd.');
+        }
+        return redirect()->route('allergeen.index')->with('error', 'Allergeen niet gevonden.');
+    }
+
+    /**
+     * Toon de beheerpagina voor allergenen.
+     */
+    public function beheer()
+    {
+        $allergenen = $this->allergeenModel->getAllAllergenen();
+        return view('allergeen.beheer', [
+            'title' => 'Beheer Allergenen',
+            'allergenen' => $allergenen
+        ]);
+    }
 }

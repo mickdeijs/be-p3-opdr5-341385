@@ -106,9 +106,12 @@
                                             {{ $product->AantalAanwezig ?? '0' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                            <a href="{{ route('allergeen.leverancier', $product->ProductId) }}"
-                                               class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors"
-                                               title="Bekijk leverancier informatie">
+                                            @php
+                                                $allergeenId = optional(collect($allergenen)->firstWhere('Naam', $product->Allergenen))->Id;
+                                            @endphp
+                                            <a href="{{ $allergeenId ? route('allergeen.edit', $allergeenId) : '#' }}"
+                                               class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors {{ $allergeenId ? '' : 'opacity-50 cursor-not-allowed' }}"
+                                               title="Bewerk allergeen informatie">
                                                 ?
                                             </a>
                                         </td>
