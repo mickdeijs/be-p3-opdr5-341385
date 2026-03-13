@@ -23,9 +23,16 @@
                     <span class="text-red-600 text-sm">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="flex justify-between">
+            <div class="flex justify-between items-center mt-4">
                 <a href="{{ route('allergeen.index') }}" class="inline-block px-4 py-2 border border-gray-300 dark:border-zinc-700 rounded-md text-sm font-medium text-gray-700 dark:text-zinc-300 bg-white dark:bg-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-700">Annuleren</a>
-                <button type="submit" class="inline-block px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Opslaan</button>
+                <div class="flex gap-2">
+                    <form method="POST" action="{{ route('allergeen.destroy', $allergeen->Id) }}" onsubmit="return confirm('Weet je zeker dat je dit allergeen wilt verwijderen?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="inline-block px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Verwijderen</button>
+                    </form>
+                    <button type="submit" form="" class="inline-block px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Opslaan</button>
+                </div>
             </div>
         </form>
     </div>
