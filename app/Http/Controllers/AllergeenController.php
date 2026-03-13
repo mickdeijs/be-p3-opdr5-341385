@@ -129,6 +129,9 @@ class AllergeenController extends Controller
      */
     public function destroy($id)
     {
+        // Verwijder eerst alle koppelingen met producten
+        \DB::table('productperallergeen')->where('AllergeenId', $id)->delete();
+
         $allergeen = $this->allergeenModel->find($id);
         if ($allergeen) {
             $allergeen->delete();
