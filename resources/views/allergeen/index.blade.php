@@ -60,6 +60,47 @@
                     </div>
                 </form>
 
+                {{-- Product Toevoegen Formulier --}}
+                <form method="POST" action="{{ route('product.store') }}" class="mb-8">
+                    @csrf
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                        <div>
+                            <label for="ProductNaam" class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">Naam Product</label>
+                            <input type="text" name="ProductNaam" id="ProductNaam" required maxlength="50"
+                                   class="block w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-zinc-800 dark:text-white">
+                        </div>
+                        <div>
+                            <label for="Omschrijving" class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">Omschrijving</label>
+                            <input type="text" name="Omschrijving" id="Omschrijving" maxlength="255"
+                                   class="block w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-zinc-800 dark:text-white">
+                        </div>
+                        <div>
+                            <label for="AantalAanwezig" class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">Aantal Aanwezig</label>
+                            <input type="number" name="AantalAanwezig" id="AantalAanwezig" min="0" value="0"
+                                   class="block w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-zinc-800 dark:text-white">
+                        </div>
+                        <div>
+                            <label for="Barcode" class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">Barcode</label>
+                            <input type="text" name="Barcode" id="Barcode" maxlength="20"
+                                   class="block w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-zinc-800 dark:text-white">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="AllergeenIds" class="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">Koppel Allergenen</label>
+                        <select name="AllergeenIds[]" id="AllergeenIds" multiple required
+                                class="block w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-zinc-800 dark:text-white">
+                            @foreach($allergenen as $allergeen)
+                                <option value="{{ $allergeen->Id }}">{{ $allergeen->Naam }}</option>
+                            @endforeach
+                        </select>
+                        <small class="text-gray-500 dark:text-zinc-400">Meerdere allergenen mogelijk (Ctrl/Cmd + klik)</small>
+                    </div>
+                    <button type="submit"
+                            class="inline-flex items-center px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                        Product toevoegen
+                    </button>
+                </form>
+
                 {{-- Products Table --}}
                 @if(count($products) > 0)
                     <div class="overflow-x-auto">

@@ -64,3 +64,5 @@ Route::middleware(['auth'])->group(function () {
         )
         ->name('two-factor.show');
 });
+
+Route::post('/products', [ProductController::class, 'store'])->name('product.store');

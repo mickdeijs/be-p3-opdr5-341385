@@ -94,7 +94,38 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'ProductNaam' => 'required|string|max:50',
+            'AantalAanwezig' => 'required|integer|min:0',
+            'Barcode' => 'nullable|string|max:20',
+            'AllergeenIds' => 'required|array',
+            'AllergeenIds.*' => 'integer',
+        ]);
+
+        // Insert product zonder Omschrijving
+        $productId = \DB::table('Product')->insertGetId([
+            'Naam' => $validated['ProductNaam'],
+            'Barcode' => $validated['Barcode'] ?? '',
+            'IsActief' => 1,
+        ]);
+
+        // Insert magazijn, VerpakkingsEenheid als 1
+        \DB::table('Magazijn')->insert([
+            'ProductId' => $productId,
+            'AantalAanwezig' => $validated['AantalAanwezig'],
+            'VerpakkingsEenheid' => 1,
+        ]);
+
+        // Koppel allergenen
+        foreach ($validated['AllergeenIds'] as $allergeenId) {
+            \DB::table('ProductPerAllergeen')->insert([
+                'ProductId' => $productId,
+                'AllergeenId' => $allergeenId,
+                'IsActief' => 1,
+            ]);
+        }
+
+        return redirect()->route('allergeen.index')->with('success', 'Product succesvol toegevoegd!');
     }
 
     /**
